@@ -5,7 +5,7 @@ class Player {
     std::string name;
 
 public:
-    Player(char symbol);
+    Player(char symbol, std::string &name);
     char symbol;   
     char GetSymbol();
     void GetName();

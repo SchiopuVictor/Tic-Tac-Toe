@@ -10,9 +10,9 @@ public:
     Board();
 
     bool PlaceSymbol(int x, int y, char symbol);
-    bool IsFree(int x, int y) const;
+    bool IsFree(int x, int y);
     void Reset();
-    void Display() const; 
-    bool CheckWin(char symbol) const;
-    bool CheckDraw() const;
+    void Display(); 
+    bool CheckWin(char symbol);
+    bool CheckDraw();
 };
