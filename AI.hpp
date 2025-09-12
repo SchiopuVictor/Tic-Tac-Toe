@@ -5,6 +5,5 @@ class AI {
 public:
     char symbol;
     AI(char symbol);
-    void MakeMove(Board& board);
-    void MakeOptimalMove(Board& board);
+    void MakeMove(Board board);
 };
