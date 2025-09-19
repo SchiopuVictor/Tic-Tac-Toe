@@ -19,7 +19,7 @@ Un joc simplu scris în C++. Jucătorii plasează simbolurile X și O pe o tabl�
 # Laborator 02
 
 ## Cum compilez proiectul?
-cmd /c build.cmd - pentru a salva build-ul
-./game.exe - pentu a da la executie proiectul direct din terminal 
+`cmd /c build.cmd`: - pentru a salva build-ul.
+`./game.exe`: - pentu a da la executie proiectul direct din terminal 
 
 
