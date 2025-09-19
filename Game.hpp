@@ -8,10 +8,10 @@ class Game {
     Player player2;
 
 public:
-    Game(const std::string& name1, const std::string& name2);
+    Game( std::string& name1, std::string& name2);
 
     void Start();
     void SwitchTurn();
-    bool IsGameOver() const;
-    void GetWinner() const;
+    bool IsGameOver() ;
+    void GetWinner();
 };
