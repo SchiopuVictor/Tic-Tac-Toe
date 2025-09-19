@@ -15,3 +15,11 @@ Un joc simplu scris în C++. Jucătorii plasează simbolurile X și O pe o tabl�
 `Renderer`: se ocupă de afișarea tablei în consolă sau grafic.
 
 `AI`: reprezintă calculatorul ca adversar.
+
+# Laborator 02
+
+## Cum compilez proiectul?
+cmd /c build.cmd - pentru a salva build-ul
+./game.exe - pentu a da la executie proiectul direct din terminal 
+
+
