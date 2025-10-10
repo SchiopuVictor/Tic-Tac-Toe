@@ -2,6 +2,7 @@
 
 class Renderer {
 public:
+    Renderer();
     void Init();
     void SetBackgroundColor(int r, int g, int b);
     void SetForegroundColor(int r, int g, int b);

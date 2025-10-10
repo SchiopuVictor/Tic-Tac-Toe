@@ -1,6 +1,8 @@
 #include "Renderer.hpp"
 #include <iostream>
 
+Renderer::Renderer(){}
+
 void Renderer::Init() {
     std::cout << "Renderer initialized.\n";
 }
