@@ -19,7 +19,20 @@ Un joc simplu scris în C++. Jucătorii plasează simbolurile X și O pe o tabl�
 # Laborator 02
 
 ## Cum compilez proiectul?
-cmd /c build.cmd - pentru a salva build-ul
-./game.exe - pentu a da la executie proiectul direct din terminal 
+`cmd /c build.cmd`: - pentru a salva build-ul.
+`./game.exe`: - pentu a da la executie proiectul direct din terminal 
 
+
+# Laborator 03
+
+## Ce am realizat 
+Am definit:  
+- constructor implicit  
+- constructor de copiere  
+- constructor cu parametri  
+- operator de copiere (`=`)  
+- operator de comparație (`==`)  
+- operatori de citire și afișare (`>>` și `<<`)  
+
+Aceste modificări permit manipularea mai ușoară a obiectelor jocului și pregătesc proiectul pentru utilizarea bibliotecii standard C++.
 
