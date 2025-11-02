@@ -1,12 +1,11 @@
 #include "Board.hpp"
 #include <iostream>
 
-Board::Board(int _height, int _width) : width(_width), height(_height) {}
-Board::Board(const Board &other) : width(other.width), height(other.height)
-{
-}
+Board::Board(int _width, int _height) : width(_width), height(_height) {}
 
-const Board &Board::operator=(const Board &other)
+Board::Board(const Board &other) : width(other.width), height(other.height) {}
+
+Board &Board::operator=(const Board &other)
 {
     if (this != &other)
     {
@@ -21,9 +20,9 @@ bool Board::operator==(const Board &other) const
     return width == other.width && height == other.height;
 }
 
-bool Board::PlaceSymbol(int x, int y, char symbol)
+bool Board::PlaceSymbol(int x, int y, const std::string &symbol)
 {
-    std::cout << "Placing " << symbol << " at (" << x << "," << y << ")\n";
+    std::cout << "Plasăm " << symbol << " la (" << x << "," << y << ")\n";
     return true;
 }
 
@@ -34,15 +33,15 @@ bool Board::IsFree(int x, int y)
 
 void Board::Reset()
 {
-    std::cout << "Board reset.\n";
+    std::cout << "Tabla resetată.\n";
 }
 
 void Board::Display()
 {
-    std::cout << "Displaying board...\n";
+    std::cout << "Afisam tabla...\n";
 }
 
-bool Board::CheckWin(char symbol)
+bool Board::CheckWin(const std::string &symbol)
 {
     return false;
 }
