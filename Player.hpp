@@ -1,15 +1,18 @@
 #pragma once
+#include <iostream>
 #include <string>
 
 class Player
 {
 public:
     std::string name;
-    Player(char symbol, std::string &name);
+    std::string symbol;
+
+    Player(const std::string &symbol, const std::string &name);
+
     bool operator==(const Player &other) const;
 
-    char symbol;
-    char GetSymbol();
+    std::string GetSymbol();
     void GetName();
 };
 std::ostream &operator<<(std::ostream &out, const Player &player);

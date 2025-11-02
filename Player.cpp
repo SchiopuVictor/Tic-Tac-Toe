@@ -1,14 +1,15 @@
 #include "Player.hpp"
 #include <iostream>
 
-Player::Player(char symbol, std::string &name) : symbol(symbol), name(name) {}
+Player::Player(const std::string &symbol, const std::string &name)
+    : symbol(symbol), name(name) {}
 
 bool Player::operator==(const Player &other) const
 {
     return symbol == other.symbol && name == other.name;
 }
 
-char Player::GetSymbol()
+std::string Player::GetSymbol()
 {
     return symbol;
 }

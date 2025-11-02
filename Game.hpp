@@ -1,15 +1,17 @@
 #pragma once
 #include "Board.hpp"
 #include "Player.hpp"
-
+#include <iostream>
+#include <memory>
+#include <string>
 class Game
 {
-
 public:
-    Board board;
-    Player player1;
-    Player player2;
-    Game(std::string &name1, std::string &name2);
+    std::shared_ptr<Board> board;
+    std::shared_ptr<Player> player1;
+    std::shared_ptr<Player> player2;
+
+    Game(const std::string &name1, const std::string &name2);
     bool operator==(const Game &other) const;
 
     void Start();
@@ -17,4 +19,5 @@ public:
     bool IsGameOver();
     void GetWinner();
 };
+
 std::ostream &operator<<(std::ostream &out, const Game &game);
