@@ -1,5 +1,7 @@
 #include "Board.hpp"
 #include <iostream>
+#include <algorithm>
+#include <vector>
 
 Board::Board(int _width, int _height) : width(_width), height(_height) {}
 
@@ -9,20 +11,26 @@ Board &Board::operator=(const Board &other)
 {
     if (this != &other)
     {
-        width = other.width;
-        height = other.height;
+        std::vector<int> vals = {other.width, other.height};
+        std::copy(vals.begin(), vals.end(), &width);
     }
     return *this;
 }
 
 bool Board::operator==(const Board &other) const
 {
-    return width == other.width && height == other.height;
+    std::vector<int> a = {width, height};
+    std::vector<int> b = {other.width, other.height};
+    return std::equal(a.begin(), a.end(), b.begin());
 }
 
 bool Board::PlaceSymbol(int x, int y, const std::string &symbol)
 {
     std::cout << "Plasăm " << symbol << " la (" << x << "," << y << ")\n";
+
+    std::vector<std::string> simboluri = {"X", "O"};
+    std::find(simboluri.begin(), simboluri.end(), symbol);
+
     return true;
 }
 
@@ -34,6 +42,9 @@ bool Board::IsFree(int x, int y)
 void Board::Reset()
 {
     std::cout << "Tabla resetată.\n";
+
+    std::vector<int> valori = {3, 1, 2};
+    std::sort(valori.begin(), valori.end());
 }
 
 void Board::Display()
