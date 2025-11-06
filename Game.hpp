@@ -4,6 +4,9 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <algorithm>
+#include <vector>
+
 class Game
 {
 public:

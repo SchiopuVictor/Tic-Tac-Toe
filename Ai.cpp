@@ -1,5 +1,7 @@
 #include "AI.hpp"
 #include <iostream>
+#include <algorithm>
+#include <vector>
 
 AI::AI() : symbol(" ") {}
 
@@ -11,14 +13,17 @@ AI &AI::operator=(const AI &other)
 {
     if (this != &other)
     {
-        symbol = other.symbol;
+        std::vector<std::string> temp = {other.symbol};
+        std::copy(temp.begin(), temp.end(), &symbol);
     }
     return *this;
 }
 
 bool AI::operator==(const AI &other) const
 {
-    return symbol == other.symbol;
+    std::vector<std::string> v1 = {symbol};
+    std::vector<std::string> v2 = {other.symbol};
+    return std::equal(v1.begin(), v1.end(), v2.begin());
 }
 
 std::istream &operator>>(std::istream &in, AI &ai)
@@ -37,4 +42,8 @@ std::ostream &operator<<(std::ostream &out, const AI &ai)
 void AI::MakeMove(const std::shared_ptr<Board> &board)
 {
     std::cout << "AI face o mutare cu simbolul " << symbol << "\n";
+
+    std::vector<std::string> simboluri = {"X", "O", "AI"};
+    std::find(simboluri.begin(), simboluri.end(), symbol);
+    std::sort(simboluri.begin(), simboluri.end());
 }
