@@ -7,25 +7,27 @@
 
 class Board
 {
+    std::string position;
 public:
-    int width;
-    int height;
 
     Board(int _width = 3, int _height = 3);
+    Board(const std::string &pos);
     Board(const Board &other);
 
     Board &operator=(const Board &other);
     bool operator==(const Board &other) const;
 
     bool PlaceSymbol(int x, int y, const std::string &symbol);
-    bool IsFree(int x, int y);
+    bool IsValidMove(int x, int y) const;
+    bool IsFree(int x, int y) const;
     void Reset();
-    void Display();
-    bool CheckWin(const std::string &symbol);
-    bool CheckDraw();
+    bool CheckWin(const std::string &symbol) const;
+    bool CheckDraw() const;
 
-    int get_width() const { return width; }
-    int get_height() const { return height; }
+    int GetWidth() const;
+    int GetHeight() const;
+
+    std::string ToString() const;
 };
 
 std::istream &operator>>(std::istream &in, Board &board);
