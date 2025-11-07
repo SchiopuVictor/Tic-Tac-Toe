@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 
+#include "Board.hpp"
+
 class Renderer
 {
 public:
@@ -12,11 +14,11 @@ public:
     void SetBackgroundColor(int r, int g, int b);
     void SetForegroundColor(int r, int g, int b);
 
-    void ClearScreen();
+    void ClearScreen() const;
 
-    void PutText(int x, int y, const std::string &text);
+    void PutText(int x, int y, const std::string &text) const;
 
-    void PutBox(int x, int y, int width, int height);
+    void PutBox(int x, int y, int width, int height) const;
 
-    void Draw();
+    void DrawBoard(const Board &board) const;
 };

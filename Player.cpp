@@ -9,27 +9,31 @@ bool Player::operator==(const Player &other) const
     return symbol == other.symbol && name == other.name;
 }
 
-std::string Player::GetSymbol()
+std::string Player::GetSymbol() const
 {
     return symbol;
 }
 
-void Player::GetName()
+std::string Player::GetName() const
 {
-    std::cout << "Player name: " << name << "\n";
+    return name;
 }
 
 std::ostream &operator<<(std::ostream &out, const Player &player)
 {
-    out << "Player: " << player.name << " (Symbol: " << player.symbol << ")";
+    out << "Player: " << player.GetName() << " (Symbol: " << player.GetSymbol() << ")";
     return out;
 }
 
-std::istream &operator>>(std::istream &in, Player &player)
-{
-    std::cout << "Enter player name: ";
-    in >> player.name;
-    std::cout << "Enter player symbol: ";
-    in >> player.symbol;
-    return in;
+Coord Player::MakeMove(const Board& board) const{
+    int x, y;
+    while (true) {
+        std::cout << GetName() << ", enter your move (x y): ";
+        std::cin >> x >> y;
+        if (board.IsValidMove(x, y)) {
+            return Coord(x, y);
+        } else {
+            std::cout << "Invalid move. Try again.\n";
+        }
+    }
 }
