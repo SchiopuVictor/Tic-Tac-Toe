@@ -1,49 +1,84 @@
 #include "AI.hpp"
 #include <iostream>
 #include <algorithm>
-#include <vector>
+#include <fstream>
 
-AI::AI() : symbol(" ") {}
+AI::AI() : symbol("O") {
+    LoadKnowledgeBase();
+}
 
-AI::AI(const std::string &symbol) : symbol(symbol) {}
+AI::AI(const std::string &symbol) : symbol(symbol) {
+    LoadKnowledgeBase();
+}
 
-AI::AI(const AI &other) : symbol(other.symbol) {}
+AI::AI(const AI &other) : symbol(other.symbol) {
+    LoadKnowledgeBase();
+}
 
 AI &AI::operator=(const AI &other)
 {
     if (this != &other)
     {
-        std::vector<std::string> temp = {other.symbol};
-        std::copy(temp.begin(), temp.end(), &symbol);
+        symbol = other.symbol;
     }
     return *this;
 }
 
 bool AI::operator==(const AI &other) const
 {
-    std::vector<std::string> v1 = {symbol};
-    std::vector<std::string> v2 = {other.symbol};
-    return std::equal(v1.begin(), v1.end(), v2.begin());
+    return symbol == other.symbol;
+}
+
+Coord AI::MakeMove(const Board& board) const
+{
+    if(knowledgeBase.find(board.ToString()) != knowledgeBase.end())
+    {
+        return knowledgeBase.at(board.ToString());
+    }
+    int x, y;
+    do {
+        x = rand() % board.GetWidth();
+        y = rand() % board.GetHeight();
+    } while (! board.IsFree(x, y));
+    return Coord(x, y);
+}
+
+std::string AI::GetName() const
+{
+    return "AI Player";
+}
+
+std::string AI::GetSymbol() const
+{
+    return symbol;
 }
 
 std::istream &operator>>(std::istream &in, AI &ai)
 {
-    std::cout << "Introdu simbolul AI: ";
-    in >> ai.symbol;
+    std::string dummy;
+    in >> dummy;
+    ai = AI(dummy);
     return in;
 }
 
 std::ostream &operator<<(std::ostream &out, const AI &ai)
 {
-    out << "AI cu simbolul: " << ai.symbol;
+    out << ai.GetSymbol();
     return out;
 }
 
-void AI::MakeMove(const std::shared_ptr<Board> &board)
+void AI::LoadKnowledgeBase()
 {
-    std::cout << "AI face o mutare cu simbolul " << symbol << "\n";
-
-    std::vector<std::string> simboluri = {"X", "O", "AI"};
-    std::find(simboluri.begin(), simboluri.end(), symbol);
-    std::sort(simboluri.begin(), simboluri.end());
+    std::cout << "Loading AI knowledge base from database.txt..." << std::endl;
+    std::ifstream file("database.txt");
+    if (file.is_open())
+    {
+        std::string position;
+        Coord move;
+        while (file >> position >> move)
+        {
+            knowledgeBase[position] = move;
+        }
+        file.close();
+    }
 }

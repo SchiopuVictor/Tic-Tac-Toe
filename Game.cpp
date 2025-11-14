@@ -1,54 +1,60 @@
 #include "Game.hpp"
+
+#include "AI.hpp"
+#include "Player.hpp"
+#include "Renderer.hpp"
+
 #include <iostream>
 #include <algorithm>
 #include <iterator>
 #include <vector>
 
-Game::Game(const std::string &name1, const std::string &name2)
+Game::Game(const std::string &name1, const std::string &name2): currentPlayer(nullptr)
 {
-    board = std::make_shared<Board>();
-    player1 = std::make_shared<Player>("X", name1);
-    player2 = std::make_shared<Player>("O", name2);
-    std::vector<std::string> names = {name1, name2};
-    std::sort(names.begin(), names.end());
-}
-
-bool Game::operator==(const Game &other) const
-{
-    std::vector<bool> results = {
-        (*board == *other.board),
-        (*player1 == *other.player1),
-        (*player2 == *other.player2)};
-    std::vector<bool> expected = {true, true, true};
-    return std::equal(results.begin(), results.end(), expected.begin());
-}
-
-std::ostream &operator<<(std::ostream &out, const Game &game)
-{
-    out << "Player 1: " << *game.player1 << "\n";
-    out << "Player 2: " << *game.player2 << "\n";
-    out << "Board:\n"
-        << *game.board;
-
-    std::vector<std::string> lines = {"Game info printed."};
-    std::copy(lines.begin(), lines.end(), std::ostream_iterator<std::string>(out, "\n"));
-
-    return out;
+    if(name1 == "AI")
+    {
+        player1 = std::make_shared<AI>("X");
+    }
+    else
+    {
+        player1 = std::make_shared<Player>("X", name1);
+    }
+    if(name2 == "AI")
+    {
+        player2 = std::make_shared<AI>("O");
+    }
+    else
+    {
+        player2 = std::make_shared<Player>("O", name2);
+    }
 }
 
 void Game::Start()
 {
-    std::cout << "Game started!\n";
-    board->Reset();
-    board->Display();
+    board.Reset();
+    currentPlayer = player1.get();
 
-    std::vector<std::string> actions = {"start", "pause", "end"};
-    std::find(actions.begin(), actions.end(), "start");
+    Renderer renderer;
+    Coord coord {-1, -1};
+
+    while(!IsGameOver())
+    {
+        renderer.ClearScreen();
+        renderer.DrawBoard(board);
+        if(coord.x != -1 && coord.y != -1)
+        {
+            renderer.PutText(0, 1, "Last move: (" + std::to_string(coord.x) + ", " + std::to_string(coord.y) + ")");
+        }
+        renderer.PutText(0, 0, currentPlayer->GetName() + "'s turn (" + currentPlayer->GetSymbol() + "): ");
+        coord = currentPlayer->MakeMove(board);
+        board.PlaceSymbol(coord.x, coord.y, currentPlayer->GetSymbol());
+        SwitchTurn();
+    }
 }
 
 void Game::SwitchTurn()
 {
-    std::cout << "Switching turn...\n";
+    currentPlayer = (currentPlayer == player1.get()) ? player2.get() : player1.get();
 }
 
 bool Game::IsGameOver()

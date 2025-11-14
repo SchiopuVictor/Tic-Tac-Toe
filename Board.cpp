@@ -2,76 +2,81 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <cmath>
 
-Board::Board(int _width, int _height) : width(_width), height(_height) {}
+Board::Board(int _width, int _height) : position(_width* _height, '.') {}
+Board::Board(const std::string& pos) : position(pos) {}
+Board::Board(const Board& other) : position(other.position) {}
 
-Board::Board(const Board &other) : width(other.width), height(other.height) {}
-
-Board &Board::operator=(const Board &other)
+Board& Board::operator=(const Board& other)
 {
     if (this != &other)
     {
-        std::vector<int> vals = {other.width, other.height};
-        std::copy(vals.begin(), vals.end(), &width);
+        position = other.position;
     }
     return *this;
 }
 
-bool Board::operator==(const Board &other) const
+bool Board::operator==(const Board& other) const
 {
-    std::vector<int> a = {width, height};
-    std::vector<int> b = {other.width, other.height};
-    return std::equal(a.begin(), a.end(), b.begin());
+    return position == other.position;
 }
 
-bool Board::PlaceSymbol(int x, int y, const std::string &symbol)
+bool Board::PlaceSymbol(int x, int y, const std::string& symbol)
 {
-    std::cout << "Plasăm " << symbol << " la (" << x << "," << y << ")\n";
+    if (IsFree(x, y))
+    {
+        position[y * GetWidth() + x] = symbol[0];
+        return true;
+    }
 
-    std::vector<std::string> simboluri = {"X", "O"};
-    std::find(simboluri.begin(), simboluri.end(), symbol);
-
-    return true;
+    return false;
 }
 
-bool Board::IsFree(int x, int y)
+bool Board::IsValidMove(int x, int y) const {
+    return x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight() && IsFree(x, y);
+}
+
+bool Board::IsFree(int x, int y) const
 {
-    return true;
+    return position[y * GetWidth() + x] == ' ';
 }
 
 void Board::Reset()
 {
-    std::cout << "Tabla resetată.\n";
-
-    std::vector<int> valori = {3, 1, 2};
-    std::sort(valori.begin(), valori.end());
+    std::fill(position.begin(), position.end(), ' ');
 }
 
-void Board::Display()
+bool Board::CheckWin(const std::string& symbol) const
 {
-    std::cout << "Afisam tabla...\n";
-}
-
-bool Board::CheckWin(const std::string &symbol)
-{
+    // TODO implement win checking logic
     return false;
 }
 
-bool Board::CheckDraw()
+bool Board::CheckDraw() const
 {
+    // TODO implement draw checking logic
     return false;
 }
 
-std::istream &operator>>(std::istream &in, Board &board)
+int Board::GetWidth() const { return static_cast<int>(sqrt(position.size())); }
+int Board::GetHeight() const { return static_cast<int>(sqrt(position.size())); }
+
+std::string Board::ToString() const
 {
-    int w, h;
-    in >> w >> h;
-    board = Board(w, h);
+    return position;
+}
+
+std::istream& operator>>(std::istream& in, Board& board)
+{
+    std::string str;
+    in >> str;
+    board = Board(str);
     return in;
 }
 
-std::ostream &operator<<(std::ostream &out, const Board &board)
+std::ostream& operator<<(std::ostream& out, const Board& board)
 {
-    out << board.get_width() << " " << board.get_height();
+    out << board.ToString();
     return out;
 }
