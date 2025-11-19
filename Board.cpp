@@ -4,11 +4,11 @@
 #include <vector>
 #include <cmath>
 
-Board::Board(int _width, int _height) : position(_width* _height, '.') {}
-Board::Board(const std::string& pos) : position(pos) {}
-Board::Board(const Board& other) : position(other.position) {}
+Board::Board(int _width, int _height) : position(_width * _height, '.') {}
+Board::Board(const std::string &pos) : position(pos) {}
+Board::Board(const Board &other) : position(other.position) {}
 
-Board& Board::operator=(const Board& other)
+Board &Board::operator=(const Board &other)
 {
     if (this != &other)
     {
@@ -17,12 +17,12 @@ Board& Board::operator=(const Board& other)
     return *this;
 }
 
-bool Board::operator==(const Board& other) const
+bool Board::operator==(const Board &other) const
 {
     return position == other.position;
 }
 
-bool Board::PlaceSymbol(int x, int y, const std::string& symbol)
+bool Board::PlaceSymbol(int x, int y, const std::string &symbol)
 {
     if (IsFree(x, y))
     {
@@ -33,7 +33,8 @@ bool Board::PlaceSymbol(int x, int y, const std::string& symbol)
     return false;
 }
 
-bool Board::IsValidMove(int x, int y) const {
+bool Board::IsValidMove(int x, int y) const
+{
     return x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight() && IsFree(x, y);
 }
 
@@ -47,16 +48,77 @@ void Board::Reset()
     std::fill(position.begin(), position.end(), ' ');
 }
 
-bool Board::CheckWin(const std::string& symbol) const
+bool Board::CheckWin(const std::string &symbol) const
 {
-    // TODO implement win checking logic
-    return false;
+    if (symbol.empty())
+        return false;
+    char s = symbol[0];
+    int n = GetWidth();
+
+    for (int y = 0; y < n; ++y)
+    {
+        bool rowWin = true;
+        for (int x = 0; x < n; ++x)
+        {
+            if (position[y * n + x] != s)
+            {
+                rowWin = false;
+                break;
+            }
+        }
+        if (rowWin)
+            return true;
+    }
+
+    for (int x = 0; x < n; ++x)
+    {
+        bool colWin = true;
+        for (int y = 0; y < n; ++y)
+        {
+            if (position[y * n + x] != s)
+            {
+                colWin = false;
+                break;
+            }
+        }
+        if (colWin)
+            return true;
+    }
+
+    bool diag1Win = true;
+    for (int i = 0; i < n; ++i)
+    {
+        if (position[i * n + i] != s)
+        {
+            diag1Win = false;
+            break;
+        }
+    }
+    if (diag1Win)
+        return true;
+
+    bool diag2Win = true;
+    for (int i = 0; i < n; ++i)
+    {
+        if (position[i * n + (n - 1 - i)] != s)
+        {
+            diag2Win = false;
+            break;
+        }
+    }
+    return diag2Win;
 }
 
 bool Board::CheckDraw() const
 {
-    // TODO implement draw checking logic
-    return false;
+
+    for (char c : position)
+    {
+        if (c == ' ')
+            return false;
+    }
+
+    return true;
 }
 
 int Board::GetWidth() const { return static_cast<int>(sqrt(position.size())); }
@@ -67,7 +129,7 @@ std::string Board::ToString() const
     return position;
 }
 
-std::istream& operator>>(std::istream& in, Board& board)
+std::istream &operator>>(std::istream &in, Board &board)
 {
     std::string str;
     in >> str;
@@ -75,7 +137,7 @@ std::istream& operator>>(std::istream& in, Board& board)
     return in;
 }
 
-std::ostream& operator<<(std::ostream& out, const Board& board)
+std::ostream &operator<<(std::ostream &out, const Board &board)
 {
     out << board.ToString();
     return out;
