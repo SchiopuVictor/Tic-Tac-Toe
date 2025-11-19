@@ -57,62 +57,61 @@ bool Board::CheckWin(const std::string &symbol) const
 
     for (int y = 0; y < n; ++y)
     {
-        bool ok = true;
+        bool rowWin = true;
         for (int x = 0; x < n; ++x)
         {
             if (position[y * n + x] != s)
             {
-                ok = false;
+                rowWin = false;
                 break;
             }
         }
-        if (ok)
+        if (rowWin)
             return true;
     }
 
     for (int x = 0; x < n; ++x)
     {
-        bool ok = true;
+        bool colWin = true;
         for (int y = 0; y < n; ++y)
         {
             if (position[y * n + x] != s)
             {
-                ok = false;
+                colWin = false;
                 break;
             }
         }
-        if (ok)
+        if (colWin)
             return true;
     }
-    bool ok = true;
+
+    bool diag1Win = true;
     for (int i = 0; i < n; ++i)
     {
         if (position[i * n + i] != s)
         {
-            ok = false;
+            diag1Win = false;
             break;
         }
     }
-    if (ok)
+    if (diag1Win)
         return true;
 
-    ok = true;
+    bool diag2Win = true;
     for (int i = 0; i < n; ++i)
     {
         if (position[i * n + (n - 1 - i)] != s)
         {
-            ok = false;
+            diag2Win = false;
             break;
         }
     }
-    if (ok)
-        return true;
-
-    return false;
+    return diag2Win;
 }
 
 bool Board::CheckDraw() const
 {
+
     for (char c : position)
     {
         if (c == ' ')

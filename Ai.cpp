@@ -1,17 +1,19 @@
 #include "AI.hpp"
 #include <iostream>
-#include <algorithm>
 #include <fstream>
 
-AI::AI() : symbol("O") {
+AI::AI() : symbol("O")
+{
     LoadKnowledgeBase();
 }
 
-AI::AI(const std::string &symbol) : symbol(symbol) {
+AI::AI(const std::string &symbol) : symbol(symbol)
+{
     LoadKnowledgeBase();
 }
 
-AI::AI(const AI &other) : symbol(other.symbol) {
+AI::AI(const AI &other) : symbol(other.symbol)
+{
     LoadKnowledgeBase();
 }
 
@@ -29,17 +31,18 @@ bool AI::operator==(const AI &other) const
     return symbol == other.symbol;
 }
 
-Coord AI::MakeMove(const Board& board) const
+Coord AI::MakeMove(const Board &board) const
 {
-    if(knowledgeBase.find(board.ToString()) != knowledgeBase.end())
+    if (knowledgeBase.find(board.ToString()) != knowledgeBase.end())
     {
         return knowledgeBase.at(board.ToString());
     }
     int x, y;
-    do {
+    do
+    {
         x = rand() % board.GetWidth();
         y = rand() % board.GetHeight();
-    } while (! board.IsFree(x, y));
+    } while (!board.IsFree(x, y));
     return Coord(x, y);
 }
 
