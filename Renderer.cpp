@@ -9,18 +9,6 @@ void Renderer::Init()
     std::cout << "Renderer initialized.\n";
 }
 
-void Renderer::SetBackgroundColor(int r, int g, int b)
-{
-    std::cout << "Background color set to RGB("
-              << r << "," << g << "," << b << ")\n";
-}
-
-void Renderer::SetForegroundColor(int r, int g, int b)
-{
-    std::cout << "Foreground color set to RGB("
-              << r << "," << g << "," << b << ")\n";
-}
-
 void Renderer::ClearScreen() const
 {
     system("cls||clear");
@@ -50,4 +38,12 @@ void Renderer::DrawBoard(const Board &board) const
         }
         std::cout << "\n";
     }
+}
+
+void Renderer::PrepareFrame() const
+{
+}
+
+void Renderer::Release() const
+{
 }

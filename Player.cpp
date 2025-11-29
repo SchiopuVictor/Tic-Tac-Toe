@@ -1,5 +1,7 @@
 #include "Player.hpp"
 #include <iostream>
+#include "ConsoleListener.hpp"
+#include "RaylibListener.hpp"
 
 Player::Player(const std::string &symbol, const std::string &name)
     : symbol(symbol), name(name) {}
@@ -26,14 +28,6 @@ std::ostream &operator<<(std::ostream &out, const Player &player)
 }
 
 Coord Player::MakeMove(const Board& board) const{
-    int x, y;
-    while (true) {
-        std::cout << GetName() << ", enter your move (x y): ";
-        std::cin >> x >> y;
-        if (board.IsValidMove(x, y)) {
-            return Coord(x, y);
-        } else {
-            std::cout << "Invalid move. Try again.\n";
-        }
-    }
+    std::shared_ptr<IListener> listener = std::make_shared<RaylibListener>();
+    return listener->OnCellClicked(board);
 }
