@@ -9,8 +9,8 @@
 
 class Player: public IPLayer
 {
-    std::string name;
     std::string symbol;
+    std::string name;
 public:
     Player(const std::string &symbol, const std::string &name);
 
