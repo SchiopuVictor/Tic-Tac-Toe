@@ -4,6 +4,7 @@
 
 AI::AI() : symbol("O")
 {
+    srand(time(nullptr));
     LoadKnowledgeBase();
 }
 

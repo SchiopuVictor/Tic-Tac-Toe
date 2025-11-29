@@ -4,11 +4,11 @@
 #include <vector>
 #include <cmath>
 
-Board::Board(int _width, int _height) : position(_width * _height, '.') {}
-Board::Board(const std::string &pos) : position(pos) {}
-Board::Board(const Board &other) : position(other.position) {}
+Board::Board(int _width, int _height) : position(_width* _height, '.') {}
+Board::Board(const std::string& pos) : position(pos) {}
+Board::Board(const Board& other) : position(other.position) {}
 
-Board &Board::operator=(const Board &other)
+Board& Board::operator=(const Board& other)
 {
     if (this != &other)
     {
@@ -17,12 +17,12 @@ Board &Board::operator=(const Board &other)
     return *this;
 }
 
-bool Board::operator==(const Board &other) const
+bool Board::operator==(const Board& other) const
 {
     return position == other.position;
 }
 
-bool Board::PlaceSymbol(int x, int y, const std::string &symbol)
+bool Board::PlaceSymbol(int x, int y, const std::string& symbol)
 {
     if (IsFree(x, y))
     {
@@ -48,7 +48,7 @@ void Board::Reset()
     std::fill(position.begin(), position.end(), ' ');
 }
 
-bool Board::CheckWin(const std::string &symbol) const
+bool Board::CheckWin(const std::string& symbol) const
 {
     if (symbol.empty())
         return false;
@@ -129,7 +129,7 @@ std::string Board::ToString() const
     return position;
 }
 
-std::istream &operator>>(std::istream &in, Board &board)
+std::istream& operator>>(std::istream& in, Board& board)
 {
     std::string str;
     in >> str;
@@ -137,7 +137,7 @@ std::istream &operator>>(std::istream &in, Board &board)
     return in;
 }
 
-std::ostream &operator<<(std::ostream &out, const Board &board)
+std::ostream& operator<<(std::ostream& out, const Board& board)
 {
     out << board.ToString();
     return out;

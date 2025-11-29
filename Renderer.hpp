@@ -3,22 +3,22 @@
 #include <iostream>
 
 #include "Board.hpp"
+#include "IRenderer.hpp"
 
-class Renderer
+class Renderer: public IRenderer
 {
 public:
     Renderer();
 
-    void Init();
+    void Init() override;
 
-    void SetBackgroundColor(int r, int g, int b);
-    void SetForegroundColor(int r, int g, int b);
+    void ClearScreen() const override;
 
-    void ClearScreen() const;
+    void PutText(int x, int y, const std::string &text) const override;
 
-    void PutText(int x, int y, const std::string &text) const;
+    void PutBox(int x, int y, int width, int height) const override;
+    void DrawBoard(const Board &board) const override;
 
-    void PutBox(int x, int y, int width, int height) const;
-
-    void DrawBoard(const Board &board) const;
+    void PrepareFrame() const override;
+    void Release() const override;
 };
