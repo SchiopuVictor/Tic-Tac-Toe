@@ -6,7 +6,7 @@
 
 struct IRenderer
 {
-    virtual ~IRenderer(){}
+    virtual ~IRenderer() {}
 
     virtual void Init() = 0;
 

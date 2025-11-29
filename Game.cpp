@@ -4,13 +4,14 @@
 #include "Player.hpp"
 #include "RaylibRenderer.hpp"
 #include "RaylibListener.hpp"
+#include "raylib.h"
 
 #include <iostream>
 #include <algorithm>
 #include <iterator>
 #include <vector>
 
-Game::Game(const std::string& name1, const std::string& name2) : currentPlayer(nullptr)
+Game::Game(const std::string &name1, const std::string &name2) : currentPlayer(nullptr)
 {
     if (name1 == "AI")
     {
@@ -37,48 +38,83 @@ void Game::Start()
     currentPlayer = player1.get();
 
     std::cout << "[debug] Init renderer!\n";
-    
+
     std::shared_ptr<IRenderer> renderer = std::make_shared<RaylibRenderer>();
     renderer->Init();
     std::shared_ptr<IListener> listener = std::make_shared<RaylibListener>();
-    Coord coord{ -1, -1 };
+
     std::cout << "[debug] Start main loop!\n";
-    
+
     while (!IsGameOver() && !listener->OnExitRequested())
     {
         renderer->PrepareFrame();
         renderer->ClearScreen();
-        std::cout << "[debug] New turn for " << currentPlayer->GetName() << "!\n";
+
         renderer->DrawBoard(board);
-        // if (coord.x != -1 && coord.y != -1)
-        // {
-        //     renderer->PutText(0, 1, "Last move: (" + std::to_string(coord.x) + ", " + std::to_string(coord.y) + ")");
-        // }
         renderer->PutText(1, 3 * CELL_SIZE + 10, currentPlayer->GetName() + "'s turn (" + currentPlayer->GetSymbol() + "): ");
 
-        coord = currentPlayer->MakeMove(board);
-        std::cout << "[debug] " << currentPlayer->GetName() << " chose move (" << coord.x << ", " << coord.y << ")\n";
-        if(board.IsValidMove(coord.x, coord.y)){
-            board.PlaceSymbol(coord.x, coord.y, currentPlayer->GetSymbol());
-            
-            // if (board.CheckWin(currentPlayer->GetSymbol()))
-            // {
-            //     renderer->ClearScreen();
-            //     renderer->DrawBoard(board);
-            //     std::cout << currentPlayer->GetName() << " wins!\n";
-            //     return;
-            // }
-    
-            // if (board.CheckDraw())
-            // {
-            //     renderer->ClearScreen();
-            //     renderer->DrawBoard(board);
-            //     std::cout << "Draw!\n";
-            //     return;
-            // }
-    
-            SwitchTurn();
+        Coord coord = currentPlayer->MakeMove(board);
+
+        if (coord.x != -1 && coord.y != -1)
+        {
+            if (board.IsValidMove(coord.x, coord.y))
+            {
+                board.PlaceSymbol(coord.x, coord.y, currentPlayer->GetSymbol());
+
+                if (!IsGameOver())
+                {
+                    SwitchTurn();
+                }
+            }
         }
+
+        renderer->Release();
+    }
+
+    std::string finalMessage;
+    Color messageColor = BLACK;
+    int finalFontSize = 50;
+
+    if (board.CheckWin(player1->GetSymbol()))
+    {
+        finalMessage = player1->GetName() + " A CASTIGAT!";
+        messageColor = LIME;
+    }
+    else if (board.CheckWin(player2->GetSymbol()))
+    {
+        finalMessage = player2->GetName() + " A CASTIGAT!";
+        messageColor = LIME;
+    }
+    else if (board.CheckDraw())
+    {
+        finalMessage = "EGALITATE! (DRAW)";
+        messageColor = ORANGE;
+    }
+    else
+    {
+        return;
+    }
+
+    while (!listener->OnExitRequested())
+    {
+        renderer->PrepareFrame();
+        renderer->DrawBoard(board);
+        const int boxHeight = 150;
+        const int boxY = 450;
+        const int boxWidth = 800;
+
+        DrawRectangle(0, boxY, boxWidth, boxHeight, Fade(DARKGRAY, 0.9f));
+        int finalTextWidth = MeasureText(finalMessage.c_str(), finalFontSize);
+        int xFinalPos = (boxWidth / 2) - (finalTextWidth / 2);
+
+        const int messageY = boxY + 20;
+        const int exitY = boxY + 90;
+        DrawText(finalMessage.c_str(), xFinalPos, messageY, finalFontSize, messageColor);
+        int exitTextWidth = MeasureText("Apasa ESC pentru a iesi.", 20);
+        int xExitPos = (boxWidth / 2) - (exitTextWidth / 2);
+
+        DrawText("Apasa ESC pentru a iesi.", xExitPos, exitY, 20, WHITE);
+
         renderer->Release();
     }
 }
@@ -100,5 +136,5 @@ bool Game::IsGameOver()
 
 void Game::GetWinner()
 {
-    std::cout << "No winner yet!\n";
+    std::cout << "Checking winner...\n";
 }
