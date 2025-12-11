@@ -5,14 +5,9 @@ set LDFLAGS=-L.\raylib\lib -lraylibdll -lopengl32 -lgdi32 -lwinmm
 set OUTDIR=build
 set OBJDIR=obj
 set APPNAME=game.exe
-echo Building %APPNAME%...
 
-if not exist %OUTDIR% (
-    mkdir %OUTDIR%
-)
-if not exist %OBJDIR% (
-    mkdir %OBJDIR%
-)
+if not exist %OUTDIR% mkdir %OUTDIR%
+if not exist %OBJDIR% mkdir %OBJDIR%
 
 echo Compiling source files...
 %CC% %CFLAGS% -c Game.cpp -o %OBJDIR%\Game.o
@@ -22,26 +17,10 @@ echo Compiling source files...
 %CC% %CFLAGS% -c Player.cpp -o %OBJDIR%\Player.o
 %CC% %CFLAGS% -c AI.cpp -o %OBJDIR%\AI.o
 %CC% %CFLAGS% -c main.cpp -o %OBJDIR%\main.o
+%CC% %CFLAGS% -c RaylibRenderer.cpp -o %OBJDIR%\RaylibRenderer.o
 
-rem compile RaylibRenderer.cpp in separate dll
-echo Compiling RaylibRenderer.cpp into DLL...
-%CC% %CFLAGS% -c RaylibRenderer.cpp  -o %OBJDIR%\RaylibRenderer.o
-%CC% -shared -o %OUTDIR%\RaylibRenderer.dll ^
-    %OBJDIR%\RaylibRenderer.o ^
-    %OBJDIR%\Board.o ^
-    %LDFLAGS%
-
-echo Linking object files...
-%CC% %OBJDIR%\Game.o ^
-        %OBJDIR%\Coord.o ^
-        %OBJDIR%\Board.o ^
-        %OBJDIR%\Player.o ^
-        %OBJDIR%\RaylibListener.o ^
-        %OBJDIR%\AI.o ^
-        %OBJDIR%\main.o ^
-    -o %OUTDIR%\%APPNAME% ^
-    %LDFLAGS% ^
-    -L.\build -lRaylibRenderer
+echo Linking executable...
+%CC% %OBJDIR%\Game.o %OBJDIR%\Coord.o %OBJDIR%\Board.o %OBJDIR%\Player.o %OBJDIR%\RaylibListener.o %OBJDIR%\AI.o %OBJDIR%\main.o %OBJDIR%\RaylibRenderer.o -o %OUTDIR%\%APPNAME% %LDFLAGS%
 
 echo Copy of Raylib DLL...
 copy .\raylib\lib\raylib.dll %OUTDIR%\raylib.dll

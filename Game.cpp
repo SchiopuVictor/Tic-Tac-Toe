@@ -11,6 +11,21 @@
 #include <iterator>
 #include <vector>
 
+/**
+ * @file Game.cpp
+ * @brief Implementarea clasei Game pentru gestionarea unui joc Tic-Tac-Toe
+ * Clasa Game gestionează logica principală a jocului, schimbarea
+ * tururilor, verificarea stării jocului și interacțiunea cu renderer-ul și listener-ul.
+ */
+
+/**
+ * @brief Constructorul clasei Game.
+ * @param name1 Numele primului jucător sau "AI" pentru AI
+ * @param name2 Numele celui de-al doilea jucător sau "AI" pentru AI
+ *
+ * Creează jucătorii corespunzători (AI sau Player) și inițializează
+ * pointerul currentPlayer cu nullptr.
+ */
 Game::Game(const std::string &name1, const std::string &name2) : currentPlayer(nullptr)
 {
     if (name1 == "AI")
@@ -31,6 +46,12 @@ Game::Game(const std::string &name1, const std::string &name2) : currentPlayer(n
     }
 }
 
+/**
+ * @brief Pornește jocul și gestionează bucla principală.
+ *
+ * Aceasta resetează tabla, inițializează renderer-ul și listener-ul,
+ * gestionează tururile jucătorilor și afișează rezultatul final.
+ */
 void Game::Start()
 {
     std::cout << "[debug] Starting a new game between " << player1->GetName() << " and " << player2->GetName() << "!\n";
@@ -119,11 +140,20 @@ void Game::Start()
     }
 }
 
+/**
+ * @brief Schimbă turul curentului jucător.
+ *
+ * Dacă currentPlayer este player1, se schimbă la player2 și invers.
+ */
 void Game::SwitchTurn()
 {
     currentPlayer = (currentPlayer == player1.get()) ? player2.get() : player1.get();
 }
 
+/**
+ * @brief Verifică dacă jocul s-a terminat.
+ * @return true dacă există un câștigător sau jocul este remiză, altfel false
+ */
 bool Game::IsGameOver()
 {
     if (board.CheckWin(player1->GetSymbol()) || board.CheckWin(player2->GetSymbol()))
@@ -134,6 +164,11 @@ bool Game::IsGameOver()
     return false;
 }
 
+/**
+ * @brief Metodă pentru verificarea câștigătorului (debug).
+ *
+ * În această implementare doar afișează un mesaj de debug.
+ */
 void Game::GetWinner()
 {
     std::cout << "Checking winner...\n";
