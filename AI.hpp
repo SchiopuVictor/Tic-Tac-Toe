@@ -1,20 +1,19 @@
-#pragma once
+
 #include "Board.hpp"
 #include "Coord.hpp"
 #include "IPLayer.hpp"
-
 #include <iostream>
 #include <map>
 #include <string>
 
-class AI: public IPLayer
+class AI : public IPLayer
 {
     std::string symbol;
     std::map<std::string, Coord> knowledgeBase;
 
     void LoadKnowledgeBase();
-public:
 
+public:
     AI();
     explicit AI(const std::string &symbol);
 
@@ -25,7 +24,7 @@ public:
 
     std::string GetName() const override;
     std::string GetSymbol() const override;
-    Coord MakeMove(const Board& board) const override;
+    Coord MakeMove(const Board &board) const override;
 };
 
 std::istream &operator>>(std::istream &in, AI &ai);

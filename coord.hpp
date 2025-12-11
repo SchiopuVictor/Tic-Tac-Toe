@@ -8,6 +8,10 @@ struct Coord
     int y;
 
     Coord(int _x = 0, int _y = 0) : x(_x), y(_y) {}
+    bool operator==(const Coord &other) const
+    {
+        return x == other.x && y == other.y;
+    }
 };
 
 std::istream &operator>>(std::istream &in, Coord &coord);
